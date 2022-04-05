@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+.content {
+    position             : absolute;
+    top                  : 0;
+    left                 : 0;
+    right                : 0;
+    bottom               : 0;
+    display              : grid;
+    grid-template-areas  : 'header header''sidebar main''footer footer';
+    grid-template-rows   : auto 1fr auto;
+    grid-template-columns: auto 1fr;
+    width                : 100%;
+    height               : 100%;
+
+    .my-sidebar {
+        grid-area: sidebar;
+        position : relative;
+    }
+
+    header {
+        grid-area: header;
+    }
+
+    main {
+        grid-area: main;
+        overflow : auto;
+        position: relative;
+    }
+
+    footer {
+        grid-area: footer;
+    }
+}

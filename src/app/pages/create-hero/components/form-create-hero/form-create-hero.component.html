@@ -1,0 +1,98 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-7">
+      <div class="mb-3">
+        <label for="firstname" class="form-label">имя</label>
+        <input
+          type="text"
+          class="form-control {{ validator('firstName') }}"
+          id="firstname"
+          formControlName="firstName"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="lastname" class="form-label">фамилия</label>
+        <input
+          type="text"
+          class="form-control {{ validator('lastName') }}"
+          id="lastname"
+          formControlName="lastName"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="login" class="form-label">Email address</label>
+        <div class="row">
+          <div class="col">
+            <input
+              type="text"
+              class="form-control {{ validator('login') }}"
+              id="login"
+              placeholder="login"
+              formControlName="login"
+            />
+          </div>
+          <div class="col-auto d-flex align-items-center">@</div>
+          <div class="col-auto">
+            <select
+              formControlName="domain"
+              class="form-select {{ validator('domain') }}"
+              aria-label="Default select example"
+            >
+              <option value="lesorub59.com">lesorub59.com</option>
+              <option value="td-gidroservis.pro">td-gidroservis.pro</option>
+              <option value="pkf-gidroservis.pro">pkf-gidroservis.pro</option>
+              <option value="provision59.ru">provision59.ru</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">телефон</label>
+        <input
+          type="tel"
+          class="form-control {{ validator('phoneNumber') }}"
+          id="phone"
+          placeholder="8(999)999-99-99"
+          formControlName="phoneNumber"
+        />
+      </div>
+      <div class="mb-3">
+        <button
+          [disabled]="!(form.touched && form.valid)"
+          type="submit"
+          class="btn btn-primary"
+        >
+          создать
+        </button>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="mb-3">
+        <label for="password" class="form-label">пароль</label>
+        <input
+          type="password"
+          class="form-control {{ matchingPasswords('password') }}"
+          id="password"
+          formControlName="password"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="passwordConfirmation" class="form-label"
+          >подтвердите пароль</label
+        >
+        <input
+          type="password"
+          class="form-control {{ matchingPasswords('passwordConfirmation') }}"
+          id="passwordConfirmation"
+          formControlName="passwordConfirmation"
+        />
+        <div
+          *ngIf="form.errors?.['matchingPasswords']"
+          class="invalid-feedback"
+        >
+          пароли не совпадают
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,28 @@
+<h3>член групп</h3>
+<div class="row" *ngIf="isLoader$ | async; else unset">
+  <div class="col d-flex justify-content-center">
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+</div>
+<ng-template #unset>
+  <div class="row">
+    <div class="col">
+      <switch-role-role-list [roles]="rolesByUser$ | async"></switch-role-role-list>
+    </div>
+    <div class="col-auto">
+      <div class="d-flex flex-column">
+        <switch-role-add-role></switch-role-add-role>
+        <button (click)="deleteRole()" class="btn btn-danger btn-sm mb-1">удалить</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

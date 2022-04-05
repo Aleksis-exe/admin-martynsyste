@@ -1,0 +1,9 @@
+<select class="form-select" size="3" aria-label="size 3 select example">
+  <option
+    *ngFor="let role of roles"
+    class="border-bottom d-flex justify-content-between p-2"
+    [value]="role.name"
+  >
+    {{ role.name }} - {{ role.description }}
+  </option>
+</select>

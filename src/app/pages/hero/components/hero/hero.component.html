@@ -1,0 +1,20 @@
+<app-page-layout>
+  <div *ngIf="!(isloader$ | async); else unset">
+    <div class="container pb-5">
+      <update-hero [hero$]="(ticket$ | async)?.user"></update-hero>
+      <!--     <app-edit-hero-form
+      [initialValues]="(ticket$ | async)?.user"
+      (updateHeroSubmit)="onSubmit($event)"
+    ></app-edit-hero-form> -->
+      <hr />
+      <module-switch-role></module-switch-role>
+      <hr />
+      <hero-password-change></hero-password-change>
+      <hr />
+      <hero-danger-zone></hero-danger-zone>
+    </div>
+  </div>
+  <ng-template #unset>
+    <app-loader></app-loader>
+  </ng-template>
+</app-page-layout>

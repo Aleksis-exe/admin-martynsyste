@@ -1,0 +1,16 @@
+$backgroundHeadr: rgb(50, 50, 50);
+$background_linear_gradientHeadr: linear-gradient(
+  9deg,
+  rgba(50, 50, 50, 1) 5%,
+  rgba(72, 72, 72, 1) 51%,
+  rgba(50, 50, 50, 1) 95%
+);
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $backgroundHeadr;
+  background: $background_linear_gradientHeadr;
+  color: white;
+  height: 3rem;
+}

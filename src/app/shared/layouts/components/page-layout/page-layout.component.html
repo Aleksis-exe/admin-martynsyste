@@ -1,0 +1,18 @@
+<div class="content">
+  <header>
+    <app-header
+      [idUser]="(ticket$ | async)?.user?.id"
+      [fullname]="(ticket$ | async)?.user?.fullName"
+    ></app-header>
+  </header>
+  <app-sidebar class="sidebar"></app-sidebar>
+  <main>
+  <!--   <div class="container">
+      <ng-content></ng-content>
+    </div> -->
+    <ng-content></ng-content>
+  </main>
+  <footer>
+    <app-footer></app-footer>
+  </footer>
+</div>
