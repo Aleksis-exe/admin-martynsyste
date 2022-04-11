@@ -13,4 +13,5 @@ export interface IHero {
   firstName: string | null
   fullName: string
   reversFullName: string
+  lockout: boolean
 }

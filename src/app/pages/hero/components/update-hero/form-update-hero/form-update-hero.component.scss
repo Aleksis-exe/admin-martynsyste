@@ -1,0 +1,17 @@
+.icon {
+    width   : 300px;
+    height  : 280px;
+    position: relative;
+
+    &>img {
+        width : 290px;
+        height: 270px;
+    }
+
+    &>.btn {
+        position: absolute;
+        bottom  : 1rem;
+        right   : 1rem;
+        color   : aliceblue;
+    }
+}

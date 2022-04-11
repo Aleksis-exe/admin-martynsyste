@@ -3,6 +3,6 @@ export interface IUpdateHero {
   email: string
   phoneNumber: string
   lastName: string
-  firstName: string,
-  icon:Blob
+  firstName: string
+  icon?: Blob
 }

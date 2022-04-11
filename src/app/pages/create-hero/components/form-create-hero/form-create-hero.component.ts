@@ -15,7 +15,7 @@ import {IAddHero} from '../../interfaces/add-hero.interface'
   styleUrls: ['./form-create-hero.component.scss'],
 })
 export class FormCreateHeroComponent implements OnInit {
-  @Output('onCreateHero') onCreateHeroSubmitEvent = new EventEmitter<IAddHero>()
+  @Output('onSubmit') onCreateHeroSubmitEvent = new EventEmitter<IAddHero>()
 
   form!: FormGroup
 

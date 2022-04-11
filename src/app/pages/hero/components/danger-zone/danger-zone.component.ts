@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core'
+import {Store} from '@ngrx/store'
+import {disableHeroAction} from '../../store/actions/hero.actions'
 
 @Component({
   selector: 'hero-danger-zone',
   templateUrl: './danger-zone.component.html',
-  styleUrls: ['./danger-zone.component.scss']
+  styleUrls: ['./danger-zone.component.scss'],
 })
 export class DangerZoneComponent implements OnInit {
+  @Input('idHero') idHero: string | undefined
+  @Input('disable') disable: boolean | undefined
 
-  constructor() { }
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  get textDisable(): string {
+    if (this.disable) return 'подключить пользователя'
+    return 'отключить пользователя'
   }
 
+  onDisable(): void {
+    if (this.disable !== undefined && this.idHero !== undefined)
+      this.store.dispatch(
+        disableHeroAction({idHero: this.idHero, disable: !this.disable})
+      )
+  }
 }

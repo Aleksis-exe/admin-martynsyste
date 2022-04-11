@@ -1,4 +1,7 @@
-<div class="border-bottom p-2 row hover" routerLink="/hero/{{ hero?.id }}">
+<div
+  class="border-bottom p-2 row hover {{ disable }}"
+  routerLink="/hero/{{ hero?.id }}"
+>
   <div class="col-auto">
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,6 +31,10 @@
     {{ hero?.email }}
   </div>
   <div class="col-auto">
-    <img src="http://aspnetcore.td.loc/admin/api/Users/icon/{{hero?.id}}" width="64" height="64" />
+    <img
+      src="http://aspnetcore.td.loc/admin/api/Users/icon/{{ hero?.id }}"
+      width="64"
+      height="64"
+    />
   </div>
 </div>

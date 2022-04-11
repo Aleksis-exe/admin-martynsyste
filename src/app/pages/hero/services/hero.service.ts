@@ -4,7 +4,7 @@ import {map, Observable} from 'rxjs'
 import {environment} from 'src/environments/environment'
 import {IChangePassword} from '../interfaces/change-password.interface'
 import {ITicketHero} from '../interfaces/response-hero.interface'
-import {IUpdateHero} from '../interfaces/updateHero.interface'
+import {IUpdateHero} from '../interfaces/update-hero.interface'
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class HeroService {
     formData.append('FirstName', data.firstName)
     formData.append('LastName', data.lastName)
     formData.append('Phone', data.phoneNumber)
-    formData.append('Avatar', data.icon)
+    data.icon ? formData.append('Avatar', data.icon) : null
     return this.http
       .put<ITicketHero>(url, formData)
       .pipe(map((response: ITicketHero) => response))
@@ -41,6 +41,23 @@ export class HeroService {
     const formData = new FormData()
     formData.append('Id', model.id)
     formData.append('NewPassword', model.password)
-    this.http.post(url,formData)
+    this.http.post(url, formData)
+  }
+
+  disable(idHero: string, disable: boolean): Observable<ITicketHero> {
+    let url$: string = ''
+    if (disable) {
+      url$ = `${environment.apiUrl}/DangerZone/lockout?id=${idHero}`
+    } else {
+      url$ = `${environment.apiUrl}/DangerZone/unlock?id=${idHero}`
+    }
+    return this.http
+      .get<ITicketHero>(url$)
+      .pipe(map((response: ITicketHero) => response))
+  }
+
+  delete(idHero: string): void {
+    const url$ = `${environment.apiUrl}/DangerZone/delete?id=${idHero}`
+    this.http.delete(url$)
   }
 }

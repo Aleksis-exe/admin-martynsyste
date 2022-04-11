@@ -3,6 +3,8 @@ import {
   AbstractControl,
   FormControl,
   FormGroup,
+  ValidationErrors,
+  ValidatorFn,
   Validators,
 } from '@angular/forms'
 import {ActivatedRoute} from '@angular/router'
@@ -40,16 +42,42 @@ export class PasswordChangeComponent implements OnInit {
   }
 
   private initializeForm(): void {
-    this.form = new FormGroup({
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
-      confirmPassword: new FormControl('', [
-        Validators.required,
-        Validators.minLength(5),
-      ]),
-    })
+    this.form = new FormGroup(
+      {
+        password: new FormControl('', [
+          Validators.required,
+          Validators.minLength(5),
+        ]),
+        confirmPassword: new FormControl('', [
+          Validators.required,
+          Validators.minLength(5),
+        ]),
+      },
+      {validators: this.matchingPasswordsValidator}
+    )
+  }
+
+  matchingPasswords(controlName: string): string | undefined {
+    if (this.form.errors?.['matchingPasswords']) return 'is-invalid'
+    return this.validator(controlName)
+  }
+
+  matchingPasswordsValidator: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const pass = control.get('password')
+    const confirm = control.get('confirmPassword')
+    return pass?.value === confirm?.value ? null : {matchingPasswords: true}
+  }
+
+  validator(controlName: string): string | undefined {
+    if (
+      this.form.get(controlName)?.invalid &&
+      (this.form.get(controlName)?.touched || this.form.get(controlName)?.dirty)
+    )
+      return 'is-invalid'
+    //  if (this.form.invalid && this.form.touched) return 'is-invalid'
+    return
   }
 
   onSubmit(): void {
@@ -75,23 +103,5 @@ export class PasswordChangeComponent implements OnInit {
 
   get confirmPassword(): AbstractControl | null {
     return this.form.get('confirmPassword')
-  }
-
-  isInvalidPassword(): string | null {
-    if (
-      this.password?.invalid &&
-      (this.password.touched || this.password.dirty)
-    )
-      return 'is-invalid'
-    return null
-  }
-
-  isInvalidChangePassword(): string | null {
-    if (
-      this.confirmPassword?.invalid &&
-      (this.confirmPassword.touched || this.confirmPassword.dirty)
-    )
-      return 'is-invalid'
-    return null
   }
 }

@@ -8,30 +8,34 @@ import {reducer} from './store/reducer'
 import {EffectsModule} from '@ngrx/effects'
 import {HeroEffect} from './store/effects/hero.efect'
 import {FormsModule, ReactiveFormsModule} from '@angular/forms'
-import {UpdateHeroEffect} from './store/effects/updateHero.effect'
 import {SwitchRoleModule} from './modules/switch-role/switch-role.module'
 import {PasswordChangeModule} from './modules/password-change/password-change.module'
 import {LayoutsModule} from 'src/app/shared/layouts/layouts.module'
 import {LoaderModule} from 'src/app/modules/loader/loader.module'
-import { UpdateHeroModule } from './modules/update-hero/update-hero.module';
-import { DangerZoneComponent } from './components/danger-zone/danger-zone.component'
+import {DangerZoneComponent} from './components/danger-zone/danger-zone.component'
+import {UpdateHeroComponent} from './components/update-hero/update-hero/update-hero.component'
+import {FormUpdateHeroComponent} from './components/update-hero/form-update-hero/form-update-hero.component'
 
 const routes: Routes = [{path: 'hero/:id', component: HeroComponent}]
 
 @NgModule({
-  declarations: [HeroComponent, DangerZoneComponent],
+  declarations: [
+    HeroComponent,
+    DangerZoneComponent,
+    UpdateHeroComponent,
+    FormUpdateHeroComponent,
+  ],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     RouterModule.forChild(routes),
     StoreModule.forFeature('hero', reducer),
-    EffectsModule.forFeature([HeroEffect, UpdateHeroEffect]),
+    EffectsModule.forFeature([HeroEffect]),
     LayoutsModule,
     LoaderModule,
     SwitchRoleModule,
     PasswordChangeModule,
-    UpdateHeroModule
   ],
   providers: [HeroService],
 })

@@ -3,9 +3,8 @@ import {FormGroup} from '@angular/forms'
 import {ActivatedRoute} from '@angular/router'
 import {select, Store} from '@ngrx/store'
 import {Observable} from 'rxjs'
-import {IHero, ITicketHero} from '../../interfaces/response-hero.interface'
-import {IUpdateHero} from '../../interfaces/updateHero.interface'
-import {getHeroAction, updateHeroAction} from '../../store/actions/hero.actions'
+import {ITicketHero} from '../../interfaces/response-hero.interface'
+import {getHeroAction} from '../../store/actions/hero.actions'
 import {isLoadingSelector, isTicketSelector} from '../../store/selectors'
 
 @Component({
@@ -17,7 +16,7 @@ export class HeroComponent implements OnInit {
   id: string
   isloader$: Observable<boolean> | null = null
   ticket$: Observable<ITicketHero | null> | null = null
- // hero$: Observable<IHero | undefined> | null = null
+  // hero$: Observable<IHero | undefined> | null = null
   form!: FormGroup
 
   constructor(
@@ -35,11 +34,5 @@ export class HeroComponent implements OnInit {
     this.store.dispatch(getHeroAction({idHero: this.id}))
     this.isloader$ = this.store.pipe(select(isLoadingSelector))
     this.ticket$ = this.store.pipe(select(isTicketSelector))
-  }
-
-  onSubmit(update: IUpdateHero): void {
-    update.id = this.id
-    console.log('update', {update})
-    this.store.dispatch(updateHeroAction({update}))
   }
 }

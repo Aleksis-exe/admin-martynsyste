@@ -4,6 +4,9 @@ import {
   IHero,
   ITicketHero,
 } from 'src/app/pages/hero/interfaces/response-hero.interface'
+import {IUpdateHero} from '../../../interfaces/update-hero.interface'
+import {HeroService} from '../../../services/hero.service'
+import {updateHeroAction} from '../../../store/actions/hero.actions'
 
 @Component({
   selector: 'update-hero',
@@ -12,9 +15,15 @@ import {
 })
 export class UpdateHeroComponent implements OnInit {
   @Input() hero$: IHero | undefined = undefined
-  constructor(private store: Store<ITicketHero>) {}
+  constructor(
+    private store: Store<ITicketHero>,
+    private service: HeroService
+  ) {}
 
   ngOnInit(): void {}
 
-  initializaValues(): void {}
+  onSubmit(hero: IUpdateHero): void {
+    console.log('UpdateHeroComponent.onSubmit()', hero)
+    this.store.dispatch(updateHeroAction({hero}))
+  }
 }

@@ -1,6 +1,12 @@
 import {Action, createReducer, on} from '@ngrx/store'
 import {IHeroState} from '../interfaces/heroState.interface'
 import {
+  deleteHeroAction,
+  deleteHeroailureAction,
+  deleteHeroSuccessAction,
+  disableHeroAction,
+  disableHeroFailureAction,
+  disableHeroSuccessAction,
   getHeroAction,
   getHeroSuccessAction,
   updateHeroAction,
@@ -34,6 +40,27 @@ const heroReducer = createReducer(
     isLoader: false,
   })),
   on(updateHeroFailureAction, (state: IHeroState) => ({
+    ...state,
+    isLoader: false,
+  })),
+  on(disableHeroAction, (state: IHeroState) => ({
+    ...state,
+    isLoader: true,
+  })),
+  on(disableHeroSuccessAction, (state: IHeroState, action) => ({
+    ...state,
+  })),
+  on(disableHeroFailureAction, (state: IHeroState) => ({
+    ...state,
+    isLoader: false,
+  })),
+  on(deleteHeroAction, (state: IHeroState) => ({...state, isLoader: true})),
+  on(deleteHeroSuccessAction, (state: IHeroState) => ({
+    ...state,
+    ticket: null,
+    isLoader: false,
+  })),
+  on(deleteHeroailureAction, (state: IHeroState) => ({
     ...state,
     isLoader: false,
   })),

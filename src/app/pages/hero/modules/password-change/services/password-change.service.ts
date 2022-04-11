@@ -7,7 +7,6 @@ import {environment} from 'src/environments/environment'
 })
 export class PasswordChangeService {
   constructor(private http: HttpClient) {}
-
   changepassword(passa: {keyUser: string; pass: string}) {
     const url = `${environment.apiUrl}/users/changepassword`
     const form = new FormData()

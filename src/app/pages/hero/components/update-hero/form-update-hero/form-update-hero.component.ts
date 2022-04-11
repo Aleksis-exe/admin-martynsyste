@@ -1,7 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core'
-import {FormControl, FormGroup, Validators} from '@angular/forms'
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core'
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms'
 import {IHero} from 'src/app/pages/hero/interfaces/response-hero.interface'
 import {environment} from 'src/environments/environment'
+import {IUpdateHero} from '../../../interfaces/update-hero.interface'
 
 @Component({
   selector: 'form-update-hero',
@@ -10,6 +16,8 @@ import {environment} from 'src/environments/environment'
 })
 export class FormUpdateHeroComponent implements OnInit {
   @Input() hero: IHero | undefined = undefined
+
+  @Output('onSubmit') onUpdateSubmit = new EventEmitter<IUpdateHero>()
 
   form!: FormGroup
   blob: Blob | null = null // тут будет хранится портрет пользователя
@@ -34,18 +42,25 @@ export class FormUpdateHeroComponent implements OnInit {
       ]),
       phoneNumber: new FormControl(this.hero?.phoneNumber, [
         Validators.required,
+        Validators.pattern(
+          '[+7-8]{1,2}[(][0-9]{3}[)][0-9]{3}[-][0-9]{2}[-][0-9]{2}'
+        ),
       ]),
       lastName: new FormControl(this.hero?.lastName),
       firstName: new FormControl(this.hero?.firstName, Validators.required),
+      file: new FormControl(),
     })
   }
 
   validator(controlName: string): string | undefined {
-    if (
-      this.form.get(controlName)?.invalid &&
-      (this.form.get(controlName)?.touched || this.form.get(controlName)?.dirty)
-    )
-      return 'is-invalid'
+    const control: AbstractControl | null = this.form.get(controlName)
+    if (control !== null) {
+      if (
+        control.invalid &&
+        (control.touched || control.dirty || control.pristine)
+      )
+        return 'is-invalid'
+    }
     return
   }
 
@@ -60,6 +75,10 @@ export class FormUpdateHeroComponent implements OnInit {
       }`
     }
     return dataUrl
+  }
+
+  get fileControl(): AbstractControl {
+    return this.form.controls['file']
   }
 
   buffSrcImage() {
@@ -83,5 +102,24 @@ export class FormUpdateHeroComponent implements OnInit {
         console.log(reader.error)
       }
     }
+  }
+
+  onSubmit(): void {
+    const model: IUpdateHero = {
+      id: this.hero?.id ? this.hero?.id : '',
+      email: this.form.get('email')?.value,
+      phoneNumber: this.form.get('phoneNumber')?.value,
+      lastName: this.form.get('lastName')?.value,
+      firstName: this.form.get('firstName')?.value,
+      icon: this.blob ? this.blob : undefined,
+    }
+    if (this.form.valid) this.onUpdateSubmit.emit(model)
+  }
+
+  validSubmit(): boolean {
+    return !(
+      (this.form.touched && this.form.valid) ||
+      (this.fileControl.dirty && this.form.valid)
+    )
   }
 }

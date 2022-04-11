@@ -9,6 +9,7 @@ export interface ITicket {
     firstName: string
     fullName: string
     reversFullName: string
+    lckout: boolean
   }
   roles: string[]
 }

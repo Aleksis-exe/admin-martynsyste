@@ -10,7 +10,10 @@ export class ItemHeroComponent implements OnInit {
   @Input('hero') hero: IHero | null = null
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
+ get disable(): string | null {
+    if (this.hero?.lockout) return 'disable'
+    return null
   }
 }

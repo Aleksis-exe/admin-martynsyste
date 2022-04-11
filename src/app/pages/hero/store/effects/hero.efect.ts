@@ -1,11 +1,25 @@
+import {HttpErrorResponse} from '@angular/common/http'
 import {Injectable} from '@angular/core'
+import {Router} from '@angular/router'
 import {Actions, createEffect, ofType} from '@ngrx/effects'
-import {catchError, map, mergeMap, of, switchMap} from 'rxjs'
+import {Store} from '@ngrx/store'
+import {catchError, map, mergeMap, of, switchMap, tap} from 'rxjs'
+import {TypeAlert} from 'src/app/shared/modules/alert-bootstrap/interface/alert.interface'
+import {AlertService} from 'src/app/shared/modules/alert-bootstrap/services/alert.service'
 import {ITicketHero} from '../../interfaces/response-hero.interface'
 import {HeroService} from '../../services/hero.service'
 import {
+  deleteHeroAction,
+  deleteHeroSuccessAction,
+  disableHeroAction,
+  disableHeroFailureAction,
+  disableHeroSuccessAction,
+  getHeroAction,
   getHeroFailureAction,
   getHeroSuccessAction,
+  updateHeroAction,
+  updateHeroFailureAction,
+  updateHeroSuccessAction,
 } from '../actions/hero.actions'
 import {ActionTypes} from '../actionsType'
 
@@ -27,5 +41,75 @@ export class HeroEffect {
     )
   )
 
-  constructor(private actions$: Actions, private service: HeroService) {}
+  delete$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(deleteHeroAction),
+      map(() => {
+        return deleteHeroSuccessAction()
+      }),
+      catchError((response: HttpErrorResponse) => {
+        response.error.error.map((item: string) => {
+          this.alert.add({type: TypeAlert.warning, message: item})
+        })
+        return of(updateHeroFailureAction())
+      })
+    )
+  )
+
+  deleteSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(deleteHeroSuccessAction),
+        tap(() => {
+          this.router.navigate(['/'])
+        })
+      ),
+    {dispatch: false}
+  )
+
+  update$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(updateHeroAction),
+      switchMap(({hero}) =>
+        this.service.updateHero(hero).pipe(
+          map((ticket: ITicketHero) => {
+            return updateHeroSuccessAction({ticket})
+          }),
+          catchError((response: HttpErrorResponse) => {
+            response.error.error.map((item: string) => {
+              this.alert.add({type: TypeAlert.warning, message: item})
+            })
+            return of(updateHeroFailureAction())
+          })
+        )
+      )
+    )
+  )
+
+  disable$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(disableHeroAction),
+      switchMap((args) =>
+        this.service.disable(args.idHero, args.disable).pipe(
+          map(() => {
+            return getHeroAction({idHero: args.idHero})
+          }),
+          catchError((response: HttpErrorResponse) => {
+            response.error.error.map((item: string) => {
+              this.alert.add({type: TypeAlert.warning, message: item})
+            })
+            return of(disableHeroFailureAction())
+          })
+        )
+      )
+    )
+  )
+
+  constructor(
+    private alert: AlertService,
+    private actions$: Actions,
+    private service: HeroService,
+    private router: Router,
+    private store: Store
+  ) {}
 }
