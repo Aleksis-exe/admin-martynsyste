@@ -7,7 +7,9 @@
       к системе.
     </div>
     <div class="col-auto">
-      <button (click)="onDisable()" class="btn btn-sm btn-danger">{{ textDisable }}</button>
+      <button (click)="onDisable()" class="btn btn-sm btn-danger">
+        {{ textDisable }}
+      </button>
     </div>
   </div>
   <hr />
@@ -18,7 +20,9 @@
       будьте уверены.
     </div>
     <div class="col-auto">
-      <button class="btn btn-sm btn-danger">удалить пользователя</button>
+      <button class="btn btn-sm btn-danger" (click)="onDelete()">
+        удалить пользователя
+      </button>
     </div>
   </div>
 </div>

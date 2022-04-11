@@ -10,6 +10,7 @@ import {ITicketHero} from '../../interfaces/response-hero.interface'
 import {HeroService} from '../../services/hero.service'
 import {
   deleteHeroAction,
+  deleteHeroailureAction,
   deleteHeroSuccessAction,
   disableHeroAction,
   disableHeroFailureAction,
@@ -44,15 +45,19 @@ export class HeroEffect {
   delete$ = createEffect(() =>
     this.actions$.pipe(
       ofType(deleteHeroAction),
-      map(() => {
-        return deleteHeroSuccessAction()
-      }),
-      catchError((response: HttpErrorResponse) => {
-        response.error.error.map((item: string) => {
-          this.alert.add({type: TypeAlert.warning, message: item})
-        })
-        return of(updateHeroFailureAction())
-      })
+      mergeMap((args) =>
+        this.service.delete(args.idHero).pipe(
+          map(() => {
+            return deleteHeroSuccessAction()
+          }),
+          catchError((response: HttpErrorResponse) => {
+            response.error.error.map((item: string) => {
+              this.alert.add({type: TypeAlert.warning, message: item})
+            })
+            return of(deleteHeroailureAction())
+          })
+        )
+      )
     )
   )
 

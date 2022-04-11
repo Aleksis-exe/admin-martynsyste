@@ -56,8 +56,8 @@ export class HeroService {
       .pipe(map((response: ITicketHero) => response))
   }
 
-  delete(idHero: string): void {
+  delete(idHero: string): Observable<any>{
     const url$ = `${environment.apiUrl}/DangerZone/delete?id=${idHero}`
-    this.http.delete(url$)
+    return this.http.delete(url$)
   }
 }

@@ -1,6 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {Store} from '@ngrx/store'
-import {disableHeroAction} from '../../store/actions/hero.actions'
+import {
+  deleteHeroAction,
+  disableHeroAction,
+} from '../../store/actions/hero.actions'
 
 @Component({
   selector: 'hero-danger-zone',
@@ -25,5 +28,10 @@ export class DangerZoneComponent implements OnInit {
       this.store.dispatch(
         disableHeroAction({idHero: this.idHero, disable: !this.disable})
       )
+  }
+
+  onDelete(): void {
+    if (this.idHero !== undefined)
+      this.store.dispatch(deleteHeroAction({idHero: this.idHero}))
   }
 }
