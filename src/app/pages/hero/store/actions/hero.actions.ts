@@ -1,4 +1,6 @@
 import {createAction, props} from '@ngrx/store'
+import { IHero } from 'src/app/pages/heroes/interfaces/heroes.interface'
+import { ITicket } from 'src/app/shared/modules/autch/interfaces/ticket.interface'
 import {ITicketHero} from '../../interfaces/response-hero.interface'
 import {IUpdateHero} from '../../interfaces/update-hero.interface'
 import {ActionTypes} from '../actionsType'
@@ -45,11 +47,12 @@ export const disableHeroFailureAction = createAction(
 
 export const deleteHeroAction = createAction(
   ActionTypes.DELETE_HERO,
-  props<{idHero: string}>()
+  props<{hero: IHero}>()
 )
 
 export const deleteHeroSuccessAction = createAction(
-  ActionTypes.DELETE_HERO_SUCCESS
+  ActionTypes.DELETE_HERO_SUCCESS,
+  props<{hero: IHero}>()
 )
 
 export const deleteHeroailureAction = createAction(

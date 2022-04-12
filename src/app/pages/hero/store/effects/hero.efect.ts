@@ -46,9 +46,9 @@ export class HeroEffect {
     this.actions$.pipe(
       ofType(deleteHeroAction),
       mergeMap((args) =>
-        this.service.delete(args.idHero).pipe(
+        this.service.delete(args.hero.id).pipe(
           map(() => {
-            return deleteHeroSuccessAction()
+            return deleteHeroSuccessAction(args)
           }),
           catchError((response: HttpErrorResponse) => {
             response.error.error.map((item: string) => {
@@ -65,7 +65,11 @@ export class HeroEffect {
     () =>
       this.actions$.pipe(
         ofType(deleteHeroSuccessAction),
-        tap(() => {
+        tap((args) => {
+          this.alert.add({
+            type: TypeAlert.success,
+            message: `Пользователь удален безвозвратно <b>${args.hero.userName}</b> <b>${args.hero.fullName}</b>`,
+          })
           this.router.navigate(['/'])
         })
       ),

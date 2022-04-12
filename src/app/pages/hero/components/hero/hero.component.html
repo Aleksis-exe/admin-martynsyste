@@ -11,9 +11,10 @@
       <hr />
       <hero-password-change></hero-password-change>
       <hr />
-      <hero-danger-zone 
-      [idHero]="(ticket$|async)?.user?.id"
-      [disable]="(ticket$|async)?.user?.lockout"></hero-danger-zone>
+      <hero-danger-zone
+        [hero]="(ticket$ | async)?.user"
+        [disable]="(ticket$ | async)?.user?.lockout"
+      ></hero-danger-zone>
     </div>
   </div>
   <ng-template #unset>

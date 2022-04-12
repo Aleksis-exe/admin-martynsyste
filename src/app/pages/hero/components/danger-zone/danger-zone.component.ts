@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {Store} from '@ngrx/store'
+import {IHero} from '../../interfaces/response-hero.interface'
 import {
   deleteHeroAction,
   disableHeroAction,
@@ -11,7 +12,7 @@ import {
   styleUrls: ['./danger-zone.component.scss'],
 })
 export class DangerZoneComponent implements OnInit {
-  @Input('idHero') idHero: string | undefined
+  @Input('hero') hero: IHero | undefined
   @Input('disable') disable: boolean | undefined
 
   constructor(private store: Store) {}
@@ -24,14 +25,15 @@ export class DangerZoneComponent implements OnInit {
   }
 
   onDisable(): void {
-    if (this.disable !== undefined && this.idHero !== undefined)
+    if (this.disable !== undefined && this.hero !== undefined)
       this.store.dispatch(
-        disableHeroAction({idHero: this.idHero, disable: !this.disable})
+        disableHeroAction({idHero: this.hero.id, disable: !this.disable})
       )
   }
 
   onDelete(): void {
-    if (this.idHero !== undefined)
-      this.store.dispatch(deleteHeroAction({idHero: this.idHero}))
+    if (this.hero !== undefined)
+      if (confirm(`Удалить пользователя ${this.hero.fullName} ?`))
+        this.store.dispatch(deleteHeroAction({hero: this.hero}))
   }
 }
