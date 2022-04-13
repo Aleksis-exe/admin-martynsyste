@@ -45,10 +45,16 @@ const switchRoleReducer = createReducer(
     roles: [],
   })),
   on(onRoleAction, (state: ISwitchRoleState) => ({...state})),
-  on(onRoleSuccessAction, (state: ISwitchRoleState) => ({...state})),
+  on(onRoleSuccessAction, (state: ISwitchRoleState, action) => ({
+    ...state,
+    rolesByUser: action.roles,
+  })),
   on(onRoleFailureAction, (state: ISwitchRoleState) => ({...state})),
   on(offRoleAction, (state: ISwitchRoleState) => ({...state})),
-  on(offRoleSuccessAction, (state: ISwitchRoleState) => ({...state})),
+  on(offRoleSuccessAction, (state: ISwitchRoleState, action) => ({
+    ...state,
+    rolesByUser: action.roles,
+  })),
   on(offRoleFailureAction, (state: ISwitchRoleState) => ({...state}))
 )
 export function reducer(state: ISwitchRoleState, action: Action) {

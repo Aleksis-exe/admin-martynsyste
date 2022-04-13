@@ -27,13 +27,17 @@ export class SwitchRoleService {
       .pipe(map((response: IRoles[]) => response))
   }
 
-  onRole(model: IUpdateRole): void {
+  onRole(model: IUpdateRole): Observable<IRoleForCheckbox[]> {
     const url = `${environment.apiUrl}/users/role/on/${model.id}/${model.roleName}`
-    this.http.get(url)
+    return this.http
+      .get<IRoleForCheckbox[]>(url)
+      .pipe(map((response: IRoleForCheckbox[]) => response))
   }
 
-  offRole(model: IUpdateRole): void {
+  offRole(model: IUpdateRole): Observable<IRoleForCheckbox[]> {
     const url = `${environment.apiUrl}/users/role/off/${model.id}/${model.roleName}`
-    this.http.get(url)
+    return this.http
+      .get<IRoleForCheckbox[]>(url)
+      .pipe(map((response: IRoleForCheckbox[]) => response))
   }
 }

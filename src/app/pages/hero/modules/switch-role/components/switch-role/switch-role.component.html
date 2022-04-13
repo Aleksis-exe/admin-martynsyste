@@ -16,12 +16,33 @@
 <ng-template #unset>
   <div class="row">
     <div class="col">
-      <switch-role-role-list [roles]="rolesByUser$ | async"></switch-role-role-list>
+      <form [formGroup]="formDelete">
+        <select
+          formControlName="selectRole"
+          class="form-select"
+          size="3"
+          aria-label="size 3 select example"
+        >
+          <option
+            *ngFor="let role of rolesByUser$ | async"
+            class="border-bottom d-flex justify-content-between p-2"
+            [value]="role.name"
+          >
+            {{ role.name }} - {{ role.description }}
+          </option>
+        </select>
+      </form>
     </div>
     <div class="col-auto">
       <div class="d-flex flex-column">
         <switch-role-add-role></switch-role-add-role>
-        <button (click)="deleteRole()" class="btn btn-danger btn-sm mb-1">удалить</button>
+        <button
+          (click)="onDeleteRole()"
+          [disabled]="selectRole.invalid"
+          class="btn btn-danger btn-sm mb-1"
+        >
+          удалить
+        </button>
       </div>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core'
 import {FormControl, FormGroup, Validators} from '@angular/forms'
+import {ActivatedRoute} from '@angular/router'
 import {Store} from '@ngrx/store'
 import {IRoles} from '../../interfaces/roles.interface'
 import {onRoleAction} from '../../store/actions/switch-role.actions'
@@ -11,11 +12,13 @@ import {onRoleAction} from '../../store/actions/switch-role.actions'
 })
 export class AddRoleFormComponent implements OnInit {
   @Input() roles$: IRoles[] | null = null
-  @Input() idUSer: string = ''
+  @Input() idUSer$: string
   form!: FormGroup
   roles: IRoles[] | null | undefined = null
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private activateRoute: ActivatedRoute) {
+    this.idUSer$ = this.activateRoute.snapshot.params['id']
+  }
 
   ngOnInit(): void {
     this.initializeForm()
@@ -41,11 +44,13 @@ export class AddRoleFormComponent implements OnInit {
 
   onSubmit(): void {
     console.log('valid form', this.form.valid)
-    if (this.form.valid)
-      this.store.dispatch(
-        onRoleAction({
-          payload: {id: this.idUSer, roleName: this.form.get('select')?.value},
-        })
-      )
+    if (this.form.get('search')?.valid) {
+      const payload = {
+        id: this.idUSer$,
+        roleName: this.form.get('select')?.value,
+      }
+      console.log(payload)
+      this.store.dispatch(onRoleAction({payload}))
+    }
   }
 }

@@ -10,12 +10,17 @@ import {IRoles} from '../../interfaces/roles.interface'
 import {IUpdateRole} from '../../interfaces/update-role.interface'
 import {SwitchRoleService} from '../../services/switch-role.service'
 import {
+  getRolesAction,
   getRolesByUserFailureAction,
   getRolesByUserSuccessAction,
   getRolesFailureAction,
   getRolesSuccessAction,
+  offRoleAction,
   offRoleFailureAction,
+  offRoleSuccessAction,
+  onRoleAction,
   onRoleFailureAction,
+  onRoleSuccessAction,
 } from '../actions/switch-role.actions'
 
 @Injectable()
@@ -44,7 +49,7 @@ export class SwitchRoleEffect {
 
   getRole$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ActionTypes.GET_ROLES),
+      ofType(getRolesAction),
       mergeMap(() =>
         this.service.getRoles().pipe(
           map((roles: IRoles[]) => {
@@ -62,39 +67,51 @@ export class SwitchRoleEffect {
     )
   )
 
-  onRole$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ActionTypes.ON_ROLE),
-        tap(({payload}: {payload: IUpdateRole}) =>
-          this.service.onRole(payload)
-        ),
-        catchError((response: HttpErrorResponse) => {
-          console.log('on role effect', response.error)
-          response.error.error.map((item: string) => {
-            this.alert.add({type: TypeAlert.warning, message: item})
+  onRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(onRoleAction),
+      mergeMap(({payload}) =>
+        this.service.onRole(payload).pipe(
+          map((roles: IRoleForCheckbox[]) => {
+            this.alert.add({
+              type: TypeAlert.success,
+              message: `пользователь был добавлен в группу <b>${payload.roleName}</b>`,
+            })
+            return onRoleSuccessAction({roles})
+          }),
+          catchError((response: HttpErrorResponse) => {
+            console.log('on role effect', response.error)
+            response.error.error.map((item: string) => {
+              this.alert.add({type: TypeAlert.warning, message: item})
+            })
+            return of(onRoleFailureAction)
           })
-          return of(onRoleFailureAction)
-        })
-      ),
-    {dispatch: false}
+        )
+      )
+    )
   )
 
-  offRole$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(ActionTypes.OFF_ROLE),
-        tap(({payload}: {payload: IUpdateRole}) =>
-          this.service.offRole(payload)
-        ),
-        catchError((response: HttpErrorResponse) => {
-          console.log('off role effect', response.error)
-          response.error.error.map((item: string) => {
-            this.alert.add({type: TypeAlert.warning, message: item})
+  offRole$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(offRoleAction),
+      mergeMap(({payload}: {payload: IUpdateRole}) =>
+        this.service.offRole(payload).pipe(
+          map((roles: IRoleForCheckbox[]) => {
+            this.alert.add({
+              type: TypeAlert.success,
+              message: `пользователь был удален из группы <b>${payload.roleName}</b>`,
+            })
+            return offRoleSuccessAction({roles})
+          }),
+          catchError((response: HttpErrorResponse) => {
+            console.log('off role effect', response.error)
+            response.error.error.map((item: string) => {
+              this.alert.add({type: TypeAlert.warning, message: item})
+            })
+            return of(offRoleFailureAction)
           })
-          return of(offRoleFailureAction)
-        })
-      ),
-    {dispatch: false}
+        )
+      )
+    )
   )
 }

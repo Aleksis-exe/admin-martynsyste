@@ -25,11 +25,17 @@ export const onRoleAction = createAction(
   ActionTypes.ON_ROLE,
   props<{payload: IUpdateRole}>()
 )
-export const onRoleSuccessAction = createAction(ActionTypes.ON_ROLE_SUCCESS)
+export const onRoleSuccessAction = createAction(
+  ActionTypes.ON_ROLE_SUCCESS,
+  props<{roles: IRoleForCheckbox[]}>()
+)
 export const onRoleFailureAction = createAction(ActionTypes.ON_ROLE_FAILURE)
 export const offRoleAction = createAction(
   ActionTypes.OFF_ROLE,
   props<{payload: IUpdateRole}>()
 )
-export const offRoleSuccessAction = createAction(ActionTypes.OFF_ROLE_SUCCESS)
+export const offRoleSuccessAction = createAction(
+  ActionTypes.OFF_ROLE_SUCCESS,
+  props<{roles: IRoleForCheckbox[]}>()
+)
 export const offRoleFailureAction = createAction(ActionTypes.OFF_ROLE_FAILURE)
