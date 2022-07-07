@@ -65,6 +65,7 @@
           id="phone"
           placeholder="телефон"
           formControlName="phoneNumber"
+          (change)="format($event)"
         />
         <label for="phone">телефон</label>
       </div>

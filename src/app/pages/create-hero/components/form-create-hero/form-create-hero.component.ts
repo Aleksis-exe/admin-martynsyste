@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms'
+import { maskString } from 'src/app/shared/expansion'
 import {IAddHero} from '../../interfaces/add-hero.interface'
 
 @Component({
@@ -80,5 +81,13 @@ export class FormCreateHeroComponent implements OnInit {
     const pass = control.get('password')
     const confirm = control.get('passwordConfirmation')
     return pass?.value === confirm?.value ? null : {matchingPasswords: true}
+  }
+  
+  format(e: any) {
+    console.log(e.target.value)
+    console.log(maskString(e.target.value, '+7(###)###-##-##', '('))
+    this.form.controls['phoneNumber'].setValue(
+      maskString(e.target.value, '+#(###)###-##-##', '+()-')
+    )
   }
 }

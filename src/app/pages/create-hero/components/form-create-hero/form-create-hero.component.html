@@ -52,8 +52,9 @@
           type="tel"
           class="form-control {{ validator('phoneNumber') }}"
           id="phone"
-          placeholder="8(999)999-99-99"
+          placeholder="+7(999)999-99-99"
           formControlName="phoneNumber"
+          (change)="format($event)"
         />
       </div>
       <div class="mb-3">

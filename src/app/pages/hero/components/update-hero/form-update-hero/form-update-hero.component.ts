@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms'
 import {IHero} from 'src/app/pages/hero/interfaces/response-hero.interface'
+import { maskString } from 'src/app/shared/expansion'
 import {environment} from 'src/environments/environment'
 import {IUpdateHero} from '../../../interfaces/update-hero.interface'
 
@@ -121,5 +122,8 @@ export class FormUpdateHeroComponent implements OnInit {
       (this.form.touched && this.form.valid) ||
       (this.fileControl.dirty && this.form.valid)
     )
+  }
+  format(e: any) {
+    this.form.controls['phoneNumber'].setValue(maskString(e.target.value,'+#(###)###-##-##','+()-'))
   }
 }
