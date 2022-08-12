@@ -14,5 +14,8 @@ export class LogotypeComponent implements OnInit {
     if (environment.production) {
       this.urlLogo = '/app/admin-martynsystem/assets'
     }
+    else{
+      this.urlLogo = '/dev/assets'
+    }
   }
 }
